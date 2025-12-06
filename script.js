@@ -1,71 +1,67 @@
 // Elementary particles and common composites (dictionary lookup)
 const PDG = {
     // Leptons
-    11: "e⁻ (electron)",
-    -11: "e⁺ (positron)",
-    13: "μ⁻ (muon)",
-    -13: "μ⁺ (anti-muon)",
-    15: "τ⁻ (tau)",
-    -15: "τ⁺ (anti-tau)",
+    11: "electron (e-)",
+    "-11": "positron (e+)",
+    13: "muon (mu-)",
+    "-13": "anti-muon (mu+)",
+    15: "tau (tau-)",
+    "-15": "anti-tau (tau+)",
     
     // Neutrinos
-    12: "νₑ (electron neutrino)",
-    -12: "ν̄ₑ (electron anti-neutrino)",
-    14: "νμ (muon neutrino)",
-    -14: "ν̄μ (muon anti-neutrino)",
-    16: "ντ (tau neutrino)",
-    -16: "ν̄τ (tau anti-neutrino)",
+    12: "electron neutrino",
+    "-12": "electron anti-neutrino",
+    14: "muon neutrino",
+    "-14": "muon anti-neutrino",
+    16: "tau neutrino",
+    "-16": "tau anti-neutrino",
     
     // Gauge bosons
-    22: "γ (photon)",
-    23: "Z⁰ (Z boson)",
-    24: "W⁺ (W boson)",
-    -24: "W⁻ (W boson)",
-    21: "g (gluon)",
+    22: "photon",
+    23: "Z boson",
+    24: "W+ boson",
+    "-24": "W- boson",
+    21: "gluon",
     
     // Quarks
-    1: "d (down quark)",
-    -1: "d̄ (anti-down)",
-    2: "u (up quark)",
-    -2: "ū (anti-up)",
-    3: "s (strange quark)",
-    -3: "s̄ (anti-strange)",
-    4: "c (charm quark)",
-    -4: "c̄ (anti-charm)",
-    5: "b (bottom quark)",
-    -5: "b̄ (anti-bottom)",
-    6: "t (top quark)",
-    -6: "t̄ (anti-top)",
+    1: "down quark",
+    "-1": "anti-down quark",
+    2: "up quark",
+    "-2": "anti-up quark",
+    3: "strange quark",
+    "-3": "anti-strange quark",
+    4: "charm quark",
+    "-4": "anti-charm quark",
+    5: "bottom quark",
+    "-5": "anti-bottom quark",
+    6: "top quark",
+    "-6": "anti-top quark",
     
     // Pions
-    111: "π⁰ (neutral pion)",
-    211: "π⁺ (positive pion)",
-    -211: "π⁻ (negative pion)",
+    111: "neutral pion (pi0)",
+    211: "positive pion (pi+)",
+    "-211": "negative pion (pi-)",
     
     // Kaons
-    130: "K⁰_L (K-long)",
-    310: "K⁰_S (K-short)",
-    311: "K⁰ (neutral kaon)",
-    321: "K⁺ (positive kaon)",
-    -321: "K⁻ (negative kaon)",
+    130: "K-long (K0_L)",
+    310: "K-short (K0_S)",
+    311: "neutral kaon (K0)",
+    321: "positive kaon (K+)",
+    "-321": "negative kaon (K-)",
     
     // Baryons
-    2212: "p (proton)",
-    -2212: "p̄ (anti-proton)",
-    2112: "n (neutron)",
-    -2112: "n̄ (anti-neutron)",
-    3122: "Λ⁰ (Lambda)",
-    -3122: "Λ̄⁰ (anti-Lambda)",
-    3222: "Σ⁺ (Sigma plus)",
-    3212: "Σ⁰ (Sigma zero)",
-    3112: "Σ⁻ (Sigma minus)",
-    3322: "Ξ⁰ (Xi zero)",
-    3312: "Ξ⁻ (Xi minus)",
-    3334: "Ω⁻ (Omega minus)",
-    
-    // Special
-    0: "invalid/unknown",
-    2000000001: "¹H (hydrogen-1, proton in nucleus context)"
+    2212: "proton",
+    "-2212": "anti-proton",
+    2112: "neutron",
+    "-2112": "anti-neutron",
+    3122: "Lambda (Lambda0)",
+    "-3122": "anti-Lambda",
+    3222: "Sigma plus",
+    3212: "Sigma zero",
+    3112: "Sigma minus",
+    3322: "Xi zero",
+    3312: "Xi minus",
+    3334: "Omega minus"
 };
 
 // Element names for nuclear notation
@@ -85,56 +81,44 @@ const ELEMENTS = [
 ];
 
 function decodeNucleus(code) {
-    // PDG nuclear code format: ±10LZZZAAAI
-    // L = number of strange quarks (Lambda number)
-    // Z = atomic number (number of protons)
-    // A = mass number (total nucleons)
-    // I = isomer level (0 for ground state)
+    var isAnti = code < 0;
+    var absCode = Math.abs(code);
     
-    const isAnti = code < 0;
-    const absCode = Math.abs(code);
-    
-    // Check if it's in nuclear format (10-digit number starting with 10)
-    const codeStr = absCode.toString();
-    if (codeStr.length !== 10 || !codeStr.startsWith("10")) {
+    var codeStr = absCode.toString();
+    if (codeStr.length !== 10 || codeStr.substring(0, 2) !== "10") {
         return null;
     }
     
-    // Extract components
-    const L = parseInt(codeStr[2]);
-    const Z = parseInt(codeStr.substring(3, 6));
-    const A = parseInt(codeStr.substring(6, 9));
-    const I = parseInt(codeStr[9]);
+    var L = parseInt(codeStr[2]);
+    var Z = parseInt(codeStr.substring(3, 6));
+    var A = parseInt(codeStr.substring(6, 9));
+    var I = parseInt(codeStr[9]);
     
-    // Validate
     if (Z > ELEMENTS.length - 1 || Z < 0 || A < Z) {
         return null;
     }
     
-    const element = ELEMENTS[Z];
-    const N = A - Z; // Number of neutrons
+    var element = ELEMENTS[Z];
+    var N = A - Z;
     
-    let name = `${isAnti ? "anti-" : ""}`;
+    var name = "";
+    if (isAnti) {
+        name += "anti-";
+    }
     
-    // Add Lambda prefix if strange quarks present
     if (L > 0) {
-        name += "Λ".repeat(L);
+        name += "Lambda-" + L + " ";
     }
     
-    name += `${A}${element}`;
+    name += element + "-" + A;
     
-    // Add isomer notation if excited state
     if (I > 0) {
-        name += `*${I}`;
+        name += " (isomer level " + I + ")";
     }
     
-    // Add description
-    name += ` (Z=${Z}, N=${N}, A=${A}`;
+    name += " (Z=" + Z + ", N=" + N + ", A=" + A;
     if (L > 0) {
-        name += `, Λ=${L}`;
-    }
-    if (I > 0) {
-        name += `, isomer level ${I}`;
+        name += ", Lambda=" + L;
     }
     name += ")";
     
@@ -142,39 +126,34 @@ function decodeNucleus(code) {
 }
 
 function lookup() {
-    const input = document.getElementById("pdgInput").value.trim();
-    const code = parseInt(input, 10);
-    const resultDiv = document.getElementById("result");
+    var input = document.getElementById("pdgInput").value.trim();
+    var code = parseInt(input, 10);
+    var resultDiv = document.getElementById("result");
     
-    // Check for invalid input
     if (isNaN(code) || input === "") {
         resultDiv.innerHTML = "<span style='color: red'>Please enter a valid PDG code</span>";
         return;
     }
     
-    // First check dictionary
     if (PDG[code] !== undefined) {
-        resultDiv.innerHTML = `<span style="color: green; font-weight: bold">${PDG[code]}</span>`;
+        resultDiv.innerHTML = "Particle: <span style='color: green; font-weight: bold'>" + PDG[code] + "</span>";
         return;
     }
     
-    // Try to decode as nucleus
-    const nuclearName = decodeNucleus(code);
+    var nuclearName = decodeNucleus(code);
     if (nuclearName) {
-        resultDiv.innerHTML = `<span style="color: blue; font-weight: bold">${nuclearName}</span>`;
+        resultDiv.innerHTML = "Nucleus: <span style='color: blue; font-weight: bold'>" + nuclearName + "</span>";
         return;
     }
     
-    // Unknown code
-    resultDiv.innerHTML = `<span style='color: red'>Unknown PDG code: ${code}</span>`;
+    resultDiv.innerHTML = "<span style='color: red'>Unknown PDG code: " + code + "</span>";
 }
 
-// Allow Enter key to trigger lookup
-document.addEventListener('DOMContentLoaded', function() {
-    const input = document.getElementById('pdgInput');
+document.addEventListener("DOMContentLoaded", function() {
+    var input = document.getElementById("pdgInput");
     if (input) {
-        input.addEventListener('keypress', function(event) {
-            if (event.key === 'Enter') {
+        input.addEventListener("keypress", function(event) {
+            if (event.key === "Enter") {
                 lookup();
             }
         });

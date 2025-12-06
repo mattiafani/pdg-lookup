@@ -2,19 +2,85 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>PDG Lookup</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PDG Particle Lookup | GEANT4 Monte Carlo Tool</title>
+<meta name="description" content="Quick lookup tool for GEANT4 PDG particle identification codes">
 <link rel="stylesheet" href="styles.css">
 </head>
 <body>
 
-<h1>GEANT4 / PDG Particle Lookup</h1>
-
-<input id="pdgInput" type="number" placeholder="Enter PDG code" />
-<button onclick="lookup()">Lookup</button>
-
-<div id="result"></div>
+<div class="container">
+    <!-- Title -->
+    <h1>PDG Particle Code Lookup</h1>
+    
+    <!-- Description -->
+    <p class="description">
+        A quick reference tool for identifying particles from their PDG Monte Carlo numbering codes used in GEANT4 simulations. 
+        Enter a PDG code to decode elementary particles, nuclei, and other physics objects according to the 
+        Particle Data Group standard scheme.
+    </p>
+    
+    <!-- Input Section -->
+    <div class="input-section">
+        <div class="input-group">
+            <input id="pdgInput" type="text" placeholder="Enter PDG code (e.g., 22, 2212, 1000180400)" autocomplete="off" />
+            <button onclick="lookup()">Lookup</button>
+        </div>
+    </div>
+    
+    <!-- Result Section -->
+    <div class="result-section">
+        <div id="result">
+            <div class="particle-name">Enter a PDG code to begin</div>
+        </div>
+    </div>
+    
+    <!-- Examples -->
+    <div class="examples">
+        <h3>Common Examples</h3>
+        <div class="examples-grid">
+            <div class="example-item" onclick="tryCode(22)">
+                <span>Photon</span>
+                <code>22</code>
+            </div>
+            <div class="example-item" onclick="tryCode(11)">
+                <span>Electron</span>
+                <code>11</code>
+            </div>
+            <div class="example-item" onclick="tryCode(2212)">
+                <span>Proton</span>
+                <code>2212</code>
+            </div>
+            <div class="example-item" onclick="tryCode(2112)">
+                <span>Neutron</span>
+                <code>2112</code>
+            </div>
+            <div class="example-item" onclick="tryCode(1000180400)">
+                <span>Argon-40</span>
+                <code>1000180400</code>
+            </div>
+            <div class="example-item" onclick="tryCode(1000180360)">
+                <span>Argon-36</span>
+                <code>1000180360</code>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Quote of the Day -->
+    <div class="quote-section">
+        <h4>Physics Quote of the Day</h4>
+        <p class="quote-text" id="quoteText">"The most incomprehensible thing about the world is that it is comprehensible."</p>
+        <p class="quote-author" id="quoteAuthor">— Albert Einstein</p>
+    </div>
+</div>
 
 <script src="script.js"></script>
+<script>
+function tryCode(code) {
+    document.getElementById("pdgInput").value = code;
+    lookup();
+}
+</script>
+
 </body>
 </html>
-

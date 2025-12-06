@@ -1,29 +1,22 @@
 // Elementary particles and common composites (dictionary lookup)
 const PDG = {
-    // Leptons
     11: "electron (e-)",
     "-11": "positron (e+)",
     13: "muon (mu-)",
     "-13": "anti-muon (mu+)",
     15: "tau (tau-)",
     "-15": "anti-tau (tau+)",
-    
-    // Neutrinos
     12: "electron neutrino",
     "-12": "electron anti-neutrino",
     14: "muon neutrino",
     "-14": "muon anti-neutrino",
     16: "tau neutrino",
     "-16": "tau anti-neutrino",
-    
-    // Gauge bosons
     22: "photon",
     23: "Z boson",
     24: "W+ boson",
     "-24": "W- boson",
     21: "gluon",
-    
-    // Quarks
     1: "down quark",
     "-1": "anti-down quark",
     2: "up quark",
@@ -36,20 +29,14 @@ const PDG = {
     "-5": "anti-bottom quark",
     6: "top quark",
     "-6": "anti-top quark",
-    
-    // Pions
     111: "neutral pion (pi0)",
     211: "positive pion (pi+)",
     "-211": "negative pion (pi-)",
-    
-    // Kaons
     130: "K-long (K0_L)",
     310: "K-short (K0_S)",
     311: "neutral kaon (K0)",
     321: "positive kaon (K+)",
     "-321": "negative kaon (K-)",
-    
-    // Baryons
     2212: "proton",
     "-2212": "anti-proton",
     2112: "neutron",
@@ -64,7 +51,20 @@ const PDG = {
     3334: "Omega minus"
 };
 
-// Element names for nuclear notation
+// Particle properties and facts
+const PARTICLE_INFO = {
+    22: { mass: "0", charge: "0", spin: "1", type: "Gauge boson", stability: "Stable" },
+    11: { mass: "0.511 MeV/c²", charge: "-1e", spin: "1/2", type: "Lepton", stability: "Stable" },
+    "-11": { mass: "0.511 MeV/c²", charge: "+1e", spin: "1/2", type: "Lepton", stability: "Stable" },
+    13: { mass: "105.66 MeV/c²", charge: "-1e", spin: "1/2", type: "Lepton", stability: "2.2 μs" },
+    2212: { mass: "938.272 MeV/c²", charge: "+1e", spin: "1/2", type: "Baryon", stability: "Stable" },
+    "-2212": { mass: "938.272 MeV/c²", charge: "-1e", spin: "1/2", type: "Baryon", stability: "Stable" },
+    2112: { mass: "939.565 MeV/c²", charge: "0", spin: "1/2", type: "Baryon", stability: "~15 min (free)" },
+    211: { mass: "139.57 MeV/c²", charge: "+1e", spin: "0", type: "Meson", stability: "26 ns" },
+    "-211": { mass: "139.57 MeV/c²", charge: "-1e", spin: "0", type: "Meson", stability: "26 ns" },
+    111: { mass: "134.98 MeV/c²", charge: "0", spin: "0", type: "Meson", stability: "8.4×10⁻¹⁷ s" }
+};
+
 const ELEMENTS = [
     "", "H", "He", "Li", "Be", "B", "C", "N", "O", "F", "Ne",
     "Na", "Mg", "Al", "Si", "P", "S", "Cl", "Ar", "K", "Ca",
@@ -78,6 +78,20 @@ const ELEMENTS = [
     "Pa", "U", "Np", "Pu", "Am", "Cm", "Bk", "Cf", "Es", "Fm",
     "Md", "No", "Lr", "Rf", "Db", "Sg", "Bh", "Hs", "Mt", "Ds",
     "Rg", "Cn", "Nh", "Fl", "Mc", "Lv", "Ts", "Og"
+];
+
+// Physics quotes
+const QUOTES = [
+    { text: "The most incomprehensible thing about the world is that it is comprehensible.", author: "Albert Einstein" },
+    { text: "If you can't explain it simply, you don't understand it well enough.", author: "Albert Einstein" },
+    { text: "Physics is like sex: sure, it may give some practical results, but that's not why we do it.", author: "Richard Feynman" },
+    { text: "The first principle is that you must not fool yourself, and you are the easiest person to fool.", author: "Richard Feynman" },
+    { text: "God does not play dice with the universe.", author: "Albert Einstein" },
+    { text: "Everything is theoretically impossible, until it is done.", author: "Robert A. Heinlein" },
+    { text: "In physics, you don't have to go around making trouble for yourself—nature does it for you.", author: "Frank Wilczek" },
+    { text: "Physics isn't the most important thing. Love is.", author: "Richard Feynman" },
+    { text: "The beauty of a living thing is not the atoms that go into it, but the way those atoms are put together.", author: "Carl Sagan" },
+    { text: "Nothing in life is to be feared, it is only to be understood.", author: "Marie Curie" }
 ];
 
 function decodeNucleus(code) {
@@ -105,24 +119,40 @@ function decodeNucleus(code) {
     if (isAnti) {
         name += "anti-";
     }
-    
     if (L > 0) {
         name += "Lambda-" + L + " ";
     }
-    
     name += element + "-" + A;
     
-    if (I > 0) {
-        name += " (isomer level " + I + ")";
+    return {
+        name: name,
+        Z: Z,
+        N: N,
+        A: A,
+        L: L,
+        I: I,
+        element: element
+    };
+}
+
+function displayParticleInfo(name, info, type) {
+    var html = '<div class="particle-name ' + type + '">' + name + '</div>';
+    
+    if (info) {
+        html += '<div class="particle-info">';
+        for (var key in info) {
+            if (info.hasOwnProperty(key)) {
+                var label = key.charAt(0).toUpperCase() + key.slice(1);
+                html += '<div class="info-item">';
+                html += '<div class="info-label">' + label + ':</div>';
+                html += '<div class="info-value">' + info[key] + '</div>';
+                html += '</div>';
+            }
+        }
+        html += '</div>';
     }
     
-    name += " (Z=" + Z + ", N=" + N + ", A=" + A;
-    if (L > 0) {
-        name += ", Lambda=" + L;
-    }
-    name += ")";
-    
-    return name;
+    return html;
 }
 
 function lookup() {
@@ -131,22 +161,45 @@ function lookup() {
     var resultDiv = document.getElementById("result");
     
     if (isNaN(code) || input === "") {
-        resultDiv.innerHTML = "<span style='color: red'>Please enter a valid PDG code</span>";
+        resultDiv.innerHTML = displayParticleInfo("Please enter a valid PDG code", null, "error");
         return;
     }
     
+    // Check dictionary for elementary particles
     if (PDG[code] !== undefined) {
-        resultDiv.innerHTML = "Particle: <span style='color: green; font-weight: bold'>" + PDG[code] + "</span>";
+        var info = PARTICLE_INFO[code] || null;
+        resultDiv.innerHTML = displayParticleInfo(PDG[code], info, "elementary");
         return;
     }
     
-    var nuclearName = decodeNucleus(code);
-    if (nuclearName) {
-        resultDiv.innerHTML = "Nucleus: <span style='color: blue; font-weight: bold'>" + nuclearName + "</span>";
+    // Try to decode as nucleus
+    var nucleus = decodeNucleus(code);
+    if (nucleus) {
+        var nuclearInfo = {
+            "Atomic Number (Z)": nucleus.Z,
+            "Neutron Number (N)": nucleus.N,
+            "Mass Number (A)": nucleus.A,
+            "Element": nucleus.element
+        };
+        if (nucleus.L > 0) {
+            nuclearInfo["Lambda quarks"] = nucleus.L;
+        }
+        if (nucleus.I > 0) {
+            nuclearInfo["Isomer level"] = nucleus.I;
+        }
+        
+        resultDiv.innerHTML = displayParticleInfo(nucleus.name, nuclearInfo, "nucleus");
         return;
     }
     
-    resultDiv.innerHTML = "<span style='color: red'>Unknown PDG code: " + code + "</span>";
+    // Unknown code
+    resultDiv.innerHTML = displayParticleInfo("Unknown PDG code: " + code, null, "error");
+}
+
+function setRandomQuote() {
+    var quote = QUOTES[Math.floor(Math.random() * QUOTES.length)];
+    document.getElementById("quoteText").textContent = '"' + quote.text + '"';
+    document.getElementById("quoteAuthor").textContent = "— " + quote.author;
 }
 
 document.addEventListener("DOMContentLoaded", function() {
@@ -158,4 +211,7 @@ document.addEventListener("DOMContentLoaded", function() {
             }
         });
     }
+    
+    // Set a random quote on page load
+    setRandomQuote();
 });

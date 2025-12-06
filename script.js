@@ -211,16 +211,52 @@ function lookup() {
     resultDiv.innerHTML = displayParticleInfo("Unknown PDG code: " + code, null, "error");
 }
 
+function getTodayDateString() {
+    var today = new Date();
+    return today.getFullYear() + "-" + (today.getMonth() + 1) + "-" + today.getDate();
+}
+
+function getDailyQuoteIndex() {
+    // Use today's date as a seed for consistent daily quote
+    var dateStr = getTodayDateString();
+    var hash = 0;
+    for (var i = 0; i < dateStr.length; i++) {
+        hash = ((hash << 5) - hash) + dateStr.charCodeAt(i);
+        hash = hash & hash;
+    }
+    return Math.abs(hash) % QUOTES.length;
+}
+
 function setRandomQuote() {
-    // Try to fetch from API first, fallback to local quotes
+    var today = getTodayDateString();
+    var storedDate = localStorage.getItem("quoteDate");
+    var storedQuote = localStorage.getItem("quoteText");
+    var storedAuthor = localStorage.getItem("quoteAuthor");
+    
+    // If we have a quote from today, use it
+    if (storedDate === today && storedQuote && storedAuthor) {
+        document.getElementById("quoteText").textContent = storedQuote;
+        document.getElementById("quoteAuthor").textContent = storedAuthor;
+        return;
+    }
+    
+    // Otherwise, get a new quote for today
     fetch("https://api.quotable.io/quotes/random?tags=science|technology")
         .then(function(response) {
             return response.json();
         })
         .then(function(data) {
             if (data && data[0]) {
-                document.getElementById("quoteText").textContent = '"' + data[0].content + '"';
-                document.getElementById("quoteAuthor").textContent = "— " + data[0].author;
+                var quoteText = '"' + data[0].content + '"';
+                var quoteAuthor = "— " + data[0].author;
+                
+                document.getElementById("quoteText").textContent = quoteText;
+                document.getElementById("quoteAuthor").textContent = quoteAuthor;
+                
+                // Store for the rest of the day
+                localStorage.setItem("quoteDate", today);
+                localStorage.setItem("quoteText", quoteText);
+                localStorage.setItem("quoteAuthor", quoteAuthor);
             } else {
                 setLocalQuote();
             }
@@ -232,9 +268,20 @@ function setRandomQuote() {
 }
 
 function setLocalQuote() {
-    var quote = QUOTES[Math.floor(Math.random() * QUOTES.length)];
-    document.getElementById("quoteText").textContent = '"' + quote.text + '"';
-    document.getElementById("quoteAuthor").textContent = "— " + quote.author;
+    // Use date-based index for consistent daily quote from local collection
+    var index = getDailyQuoteIndex();
+    var quote = QUOTES[index];
+    var quoteText = '"' + quote.text + '"';
+    var quoteAuthor = "— " + quote.author;
+    
+    document.getElementById("quoteText").textContent = quoteText;
+    document.getElementById("quoteAuthor").textContent = quoteAuthor;
+    
+    // Store for the rest of the day
+    var today = getTodayDateString();
+    localStorage.setItem("quoteDate", today);
+    localStorage.setItem("quoteText", quoteText);
+    localStorage.setItem("quoteAuthor", quoteAuthor);
 }
 
 document.addEventListener("DOMContentLoaded", function() {

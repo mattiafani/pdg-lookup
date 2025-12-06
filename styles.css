@@ -179,6 +179,16 @@ button:active {
     display: flex;
     flex-direction: column;
     gap: 15px;
+    max-height: 2000px;
+    overflow: hidden;
+    transition: max-height 0.5s ease-in-out, opacity 0.3s ease-in-out;
+    opacity: 1;
+}
+
+.glossary.hidden {
+    max-height: 0;
+    opacity: 0;
+    margin-top: 0;
 }
 
 .glossary-item {

@@ -68,8 +68,11 @@
     
     <!-- Liquid Argon Quantities Explanation -->
     <div class="examples">
-        <h3>Understanding Liquid Argon Quantities</h3>
-        <div class="glossary">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+            <h3 style="margin-bottom: 0;">Understanding Liquid Argon Quantities</h3>
+            <button onclick="toggleGlossary()" id="glossaryBtn" style="padding: 10px 20px; font-size: 14px;">Show Details</button>
+        </div>
+        <div class="glossary hidden" id="glossary">
             <div class="glossary-item">
                 <strong>dE/dx:</strong> Energy loss per unit distance. For minimum ionizing particles (MIP), typically ~2.12 MeV/cm in LAr.
             </div>
@@ -116,6 +119,19 @@
 function tryCode(code) {
     document.getElementById("pdgInput").value = code;
     lookup();
+}
+
+function toggleGlossary() {
+    var glossary = document.getElementById("glossary");
+    var btn = document.getElementById("glossaryBtn");
+    
+    if (glossary.classList.contains("hidden")) {
+        glossary.classList.remove("hidden");
+        btn.textContent = "Hide Details";
+    } else {
+        glossary.classList.add("hidden");
+        btn.textContent = "Show Details";
+    }
 }
 </script>
 

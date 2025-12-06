@@ -80,7 +80,7 @@ const ELEMENTS = [
     "Rg", "Cn", "Nh", "Fl", "Mc", "Lv", "Ts", "Og"
 ];
 
-// Physics quotes
+// Physics quotes - expanded collection with fallback
 const QUOTES = [
     { text: "The most incomprehensible thing about the world is that it is comprehensible.", author: "Albert Einstein" },
     { text: "If you can't explain it simply, you don't understand it well enough.", author: "Albert Einstein" },
@@ -91,7 +91,22 @@ const QUOTES = [
     { text: "In physics, you don't have to go around making trouble for yourself—nature does it for you.", author: "Frank Wilczek" },
     { text: "Physics isn't the most important thing. Love is.", author: "Richard Feynman" },
     { text: "The beauty of a living thing is not the atoms that go into it, but the way those atoms are put together.", author: "Carl Sagan" },
-    { text: "Nothing in life is to be feared, it is only to be understood.", author: "Marie Curie" }
+    { text: "Nothing in life is to be feared, it is only to be understood.", author: "Marie Curie" },
+    { text: "Science is not only compatible with spirituality; it is a profound source of spirituality.", author: "Carl Sagan" },
+    { text: "An expert is a person who has made all the mistakes that can be made in a very narrow field.", author: "Niels Bohr" },
+    { text: "What we observe is not nature itself, but nature exposed to our method of questioning.", author: "Werner Heisenberg" },
+    { text: "Imagination is more important than knowledge.", author: "Albert Einstein" },
+    { text: "Reality is merely an illusion, albeit a very persistent one.", author: "Albert Einstein" },
+    { text: "Two things are infinite: the universe and human stupidity; and I'm not sure about the universe.", author: "Albert Einstein" },
+    { text: "I think nature's imagination is so much greater than man's, she's never going to let us relax.", author: "Richard Feynman" },
+    { text: "We are just an advanced breed of monkeys on a minor planet of a very average star.", author: "Stephen Hawking" },
+    { text: "The saddest aspect of life right now is that science gathers knowledge faster than society gathers wisdom.", author: "Isaac Asimov" },
+    { text: "Equipped with his five senses, man explores the universe around him and calls the adventure Science.", author: "Edwin Hubble" },
+    { text: "I would rather have questions that can't be answered than answers that can't be questioned.", author: "Richard Feynman" },
+    { text: "In science, there are no shortcuts to truth.", author: "Karl Popper" },
+    { text: "The good thing about science is that it's true whether or not you believe in it.", author: "Neil deGrasse Tyson" },
+    { text: "Somewhere, something incredible is waiting to be known.", author: "Carl Sagan" },
+    { text: "Science knows no country, because knowledge belongs to humanity, and is the torch which illuminates the world.", author: "Louis Pasteur" }
 ];
 
 function decodeNucleus(code) {
@@ -197,6 +212,26 @@ function lookup() {
 }
 
 function setRandomQuote() {
+    // Try to fetch from API first, fallback to local quotes
+    fetch("https://api.quotable.io/quotes/random?tags=science|technology")
+        .then(function(response) {
+            return response.json();
+        })
+        .then(function(data) {
+            if (data && data[0]) {
+                document.getElementById("quoteText").textContent = '"' + data[0].content + '"';
+                document.getElementById("quoteAuthor").textContent = "— " + data[0].author;
+            } else {
+                setLocalQuote();
+            }
+        })
+        .catch(function() {
+            // If API fails, use local quotes
+            setLocalQuote();
+        });
+}
+
+function setLocalQuote() {
     var quote = QUOTES[Math.floor(Math.random() * QUOTES.length)];
     document.getElementById("quoteText").textContent = '"' + quote.text + '"';
     document.getElementById("quoteAuthor").textContent = "— " + quote.author;

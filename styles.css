@@ -175,6 +175,27 @@ button:active {
     gap: 12px;
 }
 
+.glossary {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.glossary-item {
+    background: white;
+    padding: 15px 20px;
+    border-radius: 8px;
+    border-left: 4px solid #667eea;
+    line-height: 1.6;
+}
+
+.glossary-item strong {
+    color: #667eea;
+    display: block;
+    margin-bottom: 5px;
+    font-size: 1.05em;
+}
+
 .example-item {
     padding: 14px 18px;
     background: white;

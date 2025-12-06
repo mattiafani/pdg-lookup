@@ -61,7 +61,9 @@ const PARTICLE_INFO = {
         stability: "Stable",
         "LAr radiation length": "14 cm",
         "LAr pair production threshold": "1.022 MeV",
-        "LAr critical energy": "~40 MeV"
+        "LAr critical energy": "~40 MeV",
+        "LAr scintillation yield": "~40,000 photons/MeV",
+        "LAr photon attenuation": "~200 cm (128 nm)"
     },
     11: { 
         mass: "0.511 MeV/c²", 
@@ -72,7 +74,10 @@ const PARTICLE_INFO = {
         "LAr dE/dx (MIP)": "~2.12 MeV/cm",
         "LAr radiation length": "14 cm",
         "LAr critical energy": "~40 MeV",
-        "LAr range (1 MeV)": "~0.4 cm"
+        "LAr range (1 MeV)": "~0.4 cm",
+        "LAr ionization yield": "~4.2×10⁴ e⁻/MeV (W-value: 23.6 eV)",
+        "LAr scintillation yield": "~40,000 photons/MeV",
+        "LAr recombination (MIP)": "~30% at 500 V/cm"
     },
     "-11": { 
         mass: "0.511 MeV/c²", 
@@ -83,7 +88,10 @@ const PARTICLE_INFO = {
         "LAr dE/dx (MIP)": "~2.12 MeV/cm",
         "LAr radiation length": "14 cm",
         "LAr critical energy": "~40 MeV",
-        "LAr range (1 MeV)": "~0.4 cm"
+        "LAr range (1 MeV)": "~0.4 cm",
+        "LAr ionization yield": "~4.2×10⁴ e⁻/MeV",
+        "LAr scintillation yield": "~40,000 photons/MeV",
+        "LAr annihilation": "→ 2γ at rest"
     },
     13: { 
         mass: "105.66 MeV/c²", 
@@ -93,7 +101,9 @@ const PARTICLE_INFO = {
         stability: "2.2 μs",
         "LAr dE/dx (MIP)": "~2.12 MeV/cm",
         "LAr range (1 GeV)": "~6 m",
-        "LAr ionization": "~4.2×10⁴ e⁻/MeV"
+        "LAr ionization yield": "~4.2×10⁴ e⁻/MeV",
+        "LAr scintillation yield": "~40,000 photons/MeV",
+        "LAr recombination (MIP)": "~30% at 500 V/cm"
     },
     2212: { 
         mass: "938.272 MeV/c²", 
@@ -102,9 +112,13 @@ const PARTICLE_INFO = {
         type: "Baryon", 
         stability: "Stable",
         "LAr dE/dx (MIP)": "~2.12 MeV/cm",
+        "LAr dE/dx (peak)": "~8-10 MeV/cm (Bragg peak)",
         "LAr range (100 MeV)": "~1 cm",
         "LAr range (1 GeV)": "~40 cm",
-        "LAr ionization": "~4.2×10⁴ e⁻/MeV"
+        "LAr ionization yield": "~4.2×10⁴ e⁻/MeV",
+        "LAr scintillation yield": "~40,000 photons/MeV",
+        "LAr quenching factor": "~0.7 (low energy)",
+        "LAr recombination": "Energy dependent, ~50-80%"
     },
     "-2212": { 
         mass: "938.272 MeV/c²", 
@@ -113,7 +127,8 @@ const PARTICLE_INFO = {
         type: "Baryon", 
         stability: "Stable",
         "LAr dE/dx (MIP)": "~2.12 MeV/cm",
-        "LAr annihilation": "Yes (at rest)"
+        "LAr annihilation": "→ pions at rest",
+        "LAr annihilation energy": "~1876 MeV"
     },
     2112: { 
         mass: "939.565 MeV/c²", 
@@ -122,7 +137,10 @@ const PARTICLE_INFO = {
         type: "Baryon", 
         stability: "~15 min (free)",
         "LAr interaction": "Nuclear scattering",
-        "LAr mean free path": "~50 cm (thermal)"
+        "LAr mean free path": "~50 cm (thermal)",
+        "LAr nuclear recoil": "Detectable via ionization",
+        "LAr recoil quenching": "~25% (Lindhard model)",
+        "LAr capture cross section": "~0.6 barn (Ar-40)"
     },
     211: { 
         mass: "139.57 MeV/c²", 
@@ -132,7 +150,10 @@ const PARTICLE_INFO = {
         stability: "26 ns",
         "LAr dE/dx (MIP)": "~2.12 MeV/cm",
         "LAr range (100 MeV)": "~5 cm",
-        "LAr decay length (100 MeV)": "~0.6 cm"
+        "LAr decay length (100 MeV)": "~0.6 cm",
+        "LAr decay mode": "→ μ + νμ (99.99%)",
+        "LAr ionization yield": "~4.2×10⁴ e⁻/MeV",
+        "LAr scintillation yield": "~40,000 photons/MeV"
     },
     "-211": { 
         mass: "139.57 MeV/c²", 
@@ -142,7 +163,10 @@ const PARTICLE_INFO = {
         stability: "26 ns",
         "LAr dE/dx (MIP)": "~2.12 MeV/cm",
         "LAr range (100 MeV)": "~5 cm",
-        "LAr decay length (100 MeV)": "~0.6 cm"
+        "LAr decay length (100 MeV)": "~0.6 cm",
+        "LAr decay mode": "→ μ + νμ (99.99%)",
+        "LAr ionization yield": "~4.2×10⁴ e⁻/MeV",
+        "LAr scintillation yield": "~40,000 photons/MeV"
     },
     111: { 
         mass: "134.98 MeV/c²", 
@@ -151,23 +175,32 @@ const PARTICLE_INFO = {
         type: "Meson", 
         stability: "8.4×10⁻¹⁷ s",
         "LAr decay": "→ 2γ (98.8%)",
-        "LAr decay length": "<1 nm"
+        "LAr decay length": "<1 nm",
+        "LAr signature": "Electromagnetic shower from photons"
     },
     12: {
         type: "Lepton",
         mass: "< 1 eV/c²",
         charge: "0",
         spin: "1/2",
-        "LAr cross section": "~10⁻³⁸ cm² (GeV scale)",
-        "LAr interaction": "Weak only"
+        stability: "Stable",
+        "LAr cross section (1 GeV)": "~10⁻³⁸ cm²",
+        "LAr interaction": "Weak only (CC/NC)",
+        "LAr mean free path": "~10¹⁵ cm (detection unlikely)",
+        "LAr CC interaction": "νe + Ar → e⁻ + X",
+        "LAr detection": "Via charged lepton production"
     },
     14: {
         type: "Lepton",
         mass: "< 0.19 MeV/c²",
         charge: "0",
         spin: "1/2",
-        "LAr cross section": "~10⁻³⁸ cm² (GeV scale)",
-        "LAr interaction": "Weak only"
+        stability: "Stable",
+        "LAr cross section (1 GeV)": "~10⁻³⁸ cm²",
+        "LAr interaction": "Weak only (CC/NC)",
+        "LAr mean free path": "~10¹⁵ cm",
+        "LAr CC interaction": "νμ + Ar → μ⁻ + X",
+        "LAr detection": "Via muon production"
     }
 };
 

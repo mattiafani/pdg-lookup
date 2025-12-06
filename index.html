@@ -15,8 +15,9 @@
     
     <!-- Description -->
     <p class="description">
-        <p> A quick reference tool for identifying particles from their PDG Monte Carlo numbering codes used in GEANT4 simulations. Useful when ROOT libraries are available but often not implemented. </p>
-        <p> </p>
+        A quick reference tool for identifying particles from their PDG Monte Carlo numbering codes used in GEANT4 simulations. 
+        Enter a PDG code to decode elementary particles, nuclei, and other physics objects according to the 
+        Particle Data Group standard scheme.
     </p>
     
     <!-- Input Section -->
@@ -61,6 +62,43 @@
             <div class="example-item" onclick="tryCode(1000180360)">
                 <span>Argon-36</span>
                 <code>1000180360</code>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Liquid Argon Quantities Explanation -->
+    <div class="examples">
+        <h3>Understanding Liquid Argon Quantities</h3>
+        <div class="glossary">
+            <div class="glossary-item">
+                <strong>dE/dx:</strong> Energy loss per unit distance. For minimum ionizing particles (MIP), typically ~2.12 MeV/cm in LAr.
+            </div>
+            <div class="glossary-item">
+                <strong>Range:</strong> Distance a particle travels before stopping, depends on initial energy and particle type.
+            </div>
+            <div class="glossary-item">
+                <strong>Ionization Yield:</strong> Number of electron-ion pairs produced per MeV of deposited energy. W-value ~23.6 eV means ~42,000 e⁻/MeV.
+            </div>
+            <div class="glossary-item">
+                <strong>Scintillation Yield:</strong> Number of VUV photons (128 nm) produced per MeV. LAr produces ~40,000 photons/MeV.
+            </div>
+            <div class="glossary-item">
+                <strong>Recombination:</strong> Fraction of ionization electrons that recombine before collection. Electric field dependent (~30% loss at 500 V/cm for MIPs).
+            </div>
+            <div class="glossary-item">
+                <strong>Quenching Factor:</strong> Ratio of light/charge yield for nuclear recoils vs. electron recoils. Typically ~0.25-0.7 for nuclear recoils.
+            </div>
+            <div class="glossary-item">
+                <strong>Radiation Length:</strong> Distance over which a high-energy electron loses all but 1/e of its energy by bremsstrahlung. ~14 cm in LAr.
+            </div>
+            <div class="glossary-item">
+                <strong>Nuclear Recoil:</strong> Energy transferred to argon nuclei in elastic scattering. Important for neutron and dark matter detection.
+            </div>
+            <div class="glossary-item">
+                <strong>Mean Free Path:</strong> Average distance a particle travels before interacting. Varies by particle type and energy.
+            </div>
+            <div class="glossary-item">
+                <strong>Cross Section:</strong> Effective area for interaction. Neutrinos have tiny cross sections (~10⁻³⁸ cm² at GeV scale).
             </div>
         </div>
     </div>

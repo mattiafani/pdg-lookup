@@ -20,10 +20,10 @@ const PDG = {
 };
 
 function lookup() {
-    const code = parseInt(document.getElementById("pdgInput").value);
+    const code = parseInt(document.getElementById("pdgInput").value, 10);
     const resultDiv = document.getElementById("result");
 
-    if (PDG[code]) {
+    if (PDG[code] !== undefined) {
         resultDiv.innerHTML = `Particle: <span style="color: green">${PDG[code]}</span>`;
     } else {
         resultDiv.innerHTML = "<span style='color: red'>Unknown PDG code</span>";

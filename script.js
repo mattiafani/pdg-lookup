@@ -51,18 +51,124 @@ const PDG = {
     3334: "Omega minus"
 };
 
-// Particle properties and facts
+// Particle properties and facts (including liquid argon interaction data)
 const PARTICLE_INFO = {
-    22: { mass: "0", charge: "0", spin: "1", type: "Gauge boson", stability: "Stable" },
-    11: { mass: "0.511 MeV/c²", charge: "-1e", spin: "1/2", type: "Lepton", stability: "Stable" },
-    "-11": { mass: "0.511 MeV/c²", charge: "+1e", spin: "1/2", type: "Lepton", stability: "Stable" },
-    13: { mass: "105.66 MeV/c²", charge: "-1e", spin: "1/2", type: "Lepton", stability: "2.2 μs" },
-    2212: { mass: "938.272 MeV/c²", charge: "+1e", spin: "1/2", type: "Baryon", stability: "Stable" },
-    "-2212": { mass: "938.272 MeV/c²", charge: "-1e", spin: "1/2", type: "Baryon", stability: "Stable" },
-    2112: { mass: "939.565 MeV/c²", charge: "0", spin: "1/2", type: "Baryon", stability: "~15 min (free)" },
-    211: { mass: "139.57 MeV/c²", charge: "+1e", spin: "0", type: "Meson", stability: "26 ns" },
-    "-211": { mass: "139.57 MeV/c²", charge: "-1e", spin: "0", type: "Meson", stability: "26 ns" },
-    111: { mass: "134.98 MeV/c²", charge: "0", spin: "0", type: "Meson", stability: "8.4×10⁻¹⁷ s" }
+    22: { 
+        mass: "0", 
+        charge: "0", 
+        spin: "1", 
+        type: "Gauge boson", 
+        stability: "Stable",
+        "LAr radiation length": "14 cm",
+        "LAr pair production threshold": "1.022 MeV",
+        "LAr critical energy": "~40 MeV"
+    },
+    11: { 
+        mass: "0.511 MeV/c²", 
+        charge: "-1e", 
+        spin: "1/2", 
+        type: "Lepton", 
+        stability: "Stable",
+        "LAr dE/dx (MIP)": "~2.12 MeV/cm",
+        "LAr radiation length": "14 cm",
+        "LAr critical energy": "~40 MeV",
+        "LAr range (1 MeV)": "~0.4 cm"
+    },
+    "-11": { 
+        mass: "0.511 MeV/c²", 
+        charge: "+1e", 
+        spin: "1/2", 
+        type: "Lepton", 
+        stability: "Stable",
+        "LAr dE/dx (MIP)": "~2.12 MeV/cm",
+        "LAr radiation length": "14 cm",
+        "LAr critical energy": "~40 MeV",
+        "LAr range (1 MeV)": "~0.4 cm"
+    },
+    13: { 
+        mass: "105.66 MeV/c²", 
+        charge: "-1e", 
+        spin: "1/2", 
+        type: "Lepton", 
+        stability: "2.2 μs",
+        "LAr dE/dx (MIP)": "~2.12 MeV/cm",
+        "LAr range (1 GeV)": "~6 m",
+        "LAr ionization": "~4.2×10⁴ e⁻/MeV"
+    },
+    2212: { 
+        mass: "938.272 MeV/c²", 
+        charge: "+1e", 
+        spin: "1/2", 
+        type: "Baryon", 
+        stability: "Stable",
+        "LAr dE/dx (MIP)": "~2.12 MeV/cm",
+        "LAr range (100 MeV)": "~1 cm",
+        "LAr range (1 GeV)": "~40 cm",
+        "LAr ionization": "~4.2×10⁴ e⁻/MeV"
+    },
+    "-2212": { 
+        mass: "938.272 MeV/c²", 
+        charge: "-1e", 
+        spin: "1/2", 
+        type: "Baryon", 
+        stability: "Stable",
+        "LAr dE/dx (MIP)": "~2.12 MeV/cm",
+        "LAr annihilation": "Yes (at rest)"
+    },
+    2112: { 
+        mass: "939.565 MeV/c²", 
+        charge: "0", 
+        spin: "1/2", 
+        type: "Baryon", 
+        stability: "~15 min (free)",
+        "LAr interaction": "Nuclear scattering",
+        "LAr mean free path": "~50 cm (thermal)"
+    },
+    211: { 
+        mass: "139.57 MeV/c²", 
+        charge: "+1e", 
+        spin: "0", 
+        type: "Meson", 
+        stability: "26 ns",
+        "LAr dE/dx (MIP)": "~2.12 MeV/cm",
+        "LAr range (100 MeV)": "~5 cm",
+        "LAr decay length (100 MeV)": "~0.6 cm"
+    },
+    "-211": { 
+        mass: "139.57 MeV/c²", 
+        charge: "-1e", 
+        spin: "0", 
+        type: "Meson", 
+        stability: "26 ns",
+        "LAr dE/dx (MIP)": "~2.12 MeV/cm",
+        "LAr range (100 MeV)": "~5 cm",
+        "LAr decay length (100 MeV)": "~0.6 cm"
+    },
+    111: { 
+        mass: "134.98 MeV/c²", 
+        charge: "0", 
+        spin: "0", 
+        type: "Meson", 
+        stability: "8.4×10⁻¹⁷ s",
+        "LAr decay": "→ 2γ (98.8%)",
+        "LAr decay length": "<1 nm"
+    },
+    12: {
+        type: "Lepton",
+        mass: "< 1 eV/c²",
+        charge: "0",
+        spin: "1/2",
+        "LAr cross section": "~10⁻³⁸ cm² (GeV scale)",
+        "LAr interaction": "Weak only"
+    },
+    14: {
+        type: "Lepton",
+        mass: "< 0.19 MeV/c²",
+        charge: "0",
+        spin: "1/2",
+        "LAr cross section": "~10⁻³⁸ cm² (GeV scale)",
+        "LAr interaction": "Weak only"
+    }
 };
 
 const ELEMENTS = [

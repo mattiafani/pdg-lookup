@@ -3,8 +3,8 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>PDG Particle Lookup Tool</title>
-<meta name="description" content="Quick lookup tool for PDG identification codes">
+<title>PDG Particle Lookup | GEANT4 Monte Carlo Tool</title>
+<meta name="description" content="Quick lookup tool for GEANT4 PDG particle identification codes">
 <link rel="stylesheet" href="styles.css">
 </head>
 <body>
@@ -15,8 +15,9 @@
     
     <!-- Description -->
     <p class="description">
-        A quick reference tool for identifying particles from their PDG Monte Carlo numbering codes used in GEANT4 simulations.
-        Useful when ROOT libraries are available but often not implemented. 
+        A quick reference tool for identifying particles from their PDG Monte Carlo numbering codes used in GEANT4 simulations. 
+        Enter a PDG code to decode elementary particles, nuclei, and other physics objects according to the 
+        Particle Data Group standard scheme.
     </p>
     
     <!-- Input Section -->
@@ -101,6 +102,37 @@
             </div>
             <div class="glossary-item">
                 <strong>Cross Section:</strong> Effective area for interaction. Neutrinos have tiny cross sections (~10⁻³⁸ cm² at GeV scale).
+            </div>
+        </div>
+    </div>
+    
+    <!-- References Section -->
+    <div class="examples">
+        <h3>Data Sources & References</h3>
+        <div class="references">
+            <div class="reference-item">
+                <strong>Particle Data Group (PDG)</strong> - Particle properties, masses, cross sections<br>
+                <a href="https://pdg.lbl.gov/" target="_blank">https://pdg.lbl.gov/</a>
+            </div>
+            <div class="reference-item">
+                <strong>NIST Physical Reference Data</strong> - Stopping power (dE/dx) tables<br>
+                <a href="https://physics.nist.gov/PhysRefData/Star/Text/contents.html" target="_blank">https://physics.nist.gov/PhysRefData/Star/</a>
+            </div>
+            <div class="reference-item">
+                <strong>GEANT4 Physics Reference Manual</strong> - Particle interactions and simulation<br>
+                <a href="https://geant4-userdoc.web.cern.ch/UsersGuides/PhysicsReferenceManual/html/index.html" target="_blank">https://geant4-userdoc.web.cern.ch/</a>
+            </div>
+            <div class="reference-item">
+                <strong>ICARUS Collaboration</strong> - Liquid argon detector properties and measurements<br>
+                <a href="https://arxiv.org/abs/hep-ex/0103008" target="_blank">arXiv:hep-ex/0103008</a>
+            </div>
+            <div class="reference-item">
+                <strong>ENDF Nuclear Data</strong> - Neutron cross sections and reaction data<br>
+                <a href="https://www.nndc.bnl.gov/endf/" target="_blank">https://www.nndc.bnl.gov/endf/</a>
+            </div>
+            <div class="reference-item">
+                <strong>LArSoft Documentation</strong> - Liquid argon software toolkit<br>
+                <a href="https://larsoft.org/" target="_blank">https://larsoft.org/</a>
             </div>
         </div>
     </div>

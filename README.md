@@ -4,7 +4,7 @@ A web-based tool for quickly identifying particles from their PDG (Particle Data
 
 ## Usage
 
-Simply visit the tool at: **[your-github-mattiafani.github.io/pdg-lookup](https://your-github-mattiafani.github.io/pdg-lookup)**
+Simply visit the tool at: **[mattiafani.github.io/pdg-lookup](https://mattiafani.github.io/pdg-lookup)**
 
 Enter a PDG code in the search box:
 - Elementary particles: `22` (photon), `2212` (proton), `11` (electron), `-2212` (anti-proton), `-11` (positron)

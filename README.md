@@ -1,5 +1,15 @@
 # PDG Particle Code Lookup
 
+[![Live Demo](https://img.shields.io/badge/Live-Demo-blue?style=for-the-badge)](https://mattiafani.github.io/pdg-lookup)
+[![GitHub release](https://img.shields.io/github/v/release/mattiafani/pdg-lookup?style=for-the-badge)](https://github.com/mattiafani/pdg-lookup/releases)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg?style=for-the-badge)](https://opensource.org/licenses/MIT)
+
+A web-based tool for quickly identifying particles from their PDG Monte Carlo numbering codes used in GEANT4 simulations.
+
+[**🚀 Launch Tool**](https://mattiafani.github.io/pdg-lookup) | [**📖 Documentation**](#features) | [**🐛 Report Issue**](https://github.com/mattiafani/pdg-lookup/issues)
+
+# PDG Particle Code Lookup
+
 A web-based tool for quickly identifying particles from their PDG (Particle Data Group) Monte Carlo numbering codes used in GEANT4 simulations.
 
 ## Usage

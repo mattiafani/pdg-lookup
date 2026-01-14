@@ -219,34 +219,51 @@ const ELEMENTS = [
     "Rg", "Cn", "Nh", "Fl", "Mc", "Lv", "Ts", "Og"
 ];
 
-// Physics quotes - expanded collection with fallback
-const QUOTES = [
-    { text: "The most incomprehensible thing about the world is that it is comprehensible.", author: "Albert Einstein" },
-    { text: "If you can't explain it simply, you don't understand it well enough.", author: "Albert Einstein" },
-    { text: "Physics is like sex: sure, it may give some practical results, but that's not why we do it.", author: "Richard Feynman" },
-    { text: "The first principle is that you must not fool yourself, and you are the easiest person to fool.", author: "Richard Feynman" },
-    { text: "God does not play dice with the universe.", author: "Albert Einstein" },
-    { text: "Everything is theoretically impossible, until it is done.", author: "Robert A. Heinlein" },
-    { text: "In physics, you don't have to go around making trouble for yourself—nature does it for you.", author: "Frank Wilczek" },
-    { text: "Physics isn't the most important thing. Love is.", author: "Richard Feynman" },
-    { text: "The beauty of a living thing is not the atoms that go into it, but the way those atoms are put together.", author: "Carl Sagan" },
-    { text: "Nothing in life is to be feared, it is only to be understood.", author: "Marie Curie" },
-    { text: "Science is not only compatible with spirituality; it is a profound source of spirituality.", author: "Carl Sagan" },
-    { text: "An expert is a person who has made all the mistakes that can be made in a very narrow field.", author: "Niels Bohr" },
-    { text: "What we observe is not nature itself, but nature exposed to our method of questioning.", author: "Werner Heisenberg" },
-    { text: "Imagination is more important than knowledge.", author: "Albert Einstein" },
-    { text: "Reality is merely an illusion, albeit a very persistent one.", author: "Albert Einstein" },
-    { text: "Two things are infinite: the universe and human stupidity; and I'm not sure about the universe.", author: "Albert Einstein" },
-    { text: "I think nature's imagination is so much greater than man's, she's never going to let us relax.", author: "Richard Feynman" },
-    { text: "We are just an advanced breed of monkeys on a minor planet of a very average star.", author: "Stephen Hawking" },
-    { text: "The saddest aspect of life right now is that science gathers knowledge faster than society gathers wisdom.", author: "Isaac Asimov" },
-    { text: "Equipped with his five senses, man explores the universe around him and calls the adventure Science.", author: "Edwin Hubble" },
-    { text: "I would rather have questions that can't be answered than answers that can't be questioned.", author: "Richard Feynman" },
-    { text: "In science, there are no shortcuts to truth.", author: "Karl Popper" },
-    { text: "The good thing about science is that it's true whether or not you believe in it.", author: "Neil deGrasse Tyson" },
-    { text: "Somewhere, something incredible is waiting to be known.", author: "Carl Sagan" },
-    { text: "Science knows no country, because knowledge belongs to humanity, and is the torch which illuminates the world.", author: "Louis Pasteur" }
-];
+// Calculate nuclear mass using semi-empirical mass formula (SEMF)
+function calculateNuclearMass(Z, A) {
+    var N = A - Z;
+    
+    // Constants (in MeV)
+    var protonMass = 938.272;
+    var neutronMass = 939.565;
+    var electronMass = 0.511;
+    
+    // SEMF coefficients (in MeV)
+    var aV = 15.75;  // Volume term
+    var aS = 17.8;   // Surface term
+    var aC = 0.711;  // Coulomb term
+    var aA = 23.7;   // Asymmetry term
+    var aP = 11.18;  // Pairing term
+    
+    // Binding energy from SEMF
+    var volumeTerm = aV * A;
+    var surfaceTerm = -aS * Math.pow(A, 2/3);
+    var coulombTerm = -aC * Z * Z / Math.pow(A, 1/3);
+    var asymmetryTerm = -aA * Math.pow(N - Z, 2) / A;
+    
+    // Pairing term
+    var pairingTerm = 0;
+    if (N % 2 === 0 && Z % 2 === 0) {
+        pairingTerm = aP / Math.sqrt(A);  // Even-even
+    } else if (N % 2 === 1 && Z % 2 === 1) {
+        pairingTerm = -aP / Math.sqrt(A); // Odd-odd
+    }
+    
+    var bindingEnergy = volumeTerm + surfaceTerm + coulombTerm + asymmetryTerm + pairingTerm;
+    
+    // Nuclear mass = sum of nucleon masses - binding energy
+    var nuclearMass = Z * protonMass + N * neutronMass - bindingEnergy;
+    
+    // Atomic mass = nuclear mass + electron masses
+    var atomicMass = nuclearMass + Z * electronMass;
+    
+    return {
+        nuclear: nuclearMass.toFixed(3),
+        atomic: atomicMass.toFixed(3),
+        binding: bindingEnergy.toFixed(3),
+        bindingPerNucleon: (bindingEnergy / A).toFixed(3)
+    };
+}
 
 function decodeNucleus(code) {
     var isAnti = code < 0;
@@ -277,6 +294,12 @@ function decodeNucleus(code) {
         name += "Lambda-" + L + " ";
     }
     name += element + "-" + A;
+    if (I > 0) {
+        name += " (isomer level " + I + ")";
+    }
+    
+    // Calculate mass
+    var masses = calculateNuclearMass(Z, A);
     
     return {
         name: name,
@@ -285,7 +308,11 @@ function decodeNucleus(code) {
         A: A,
         L: L,
         I: I,
-        element: element
+        element: element,
+        atomicMass: masses.atomic,
+        nuclearMass: masses.nuclear,
+        bindingEnergy: masses.binding,
+        bindingPerNucleon: masses.bindingPerNucleon
     };
 }
 
@@ -319,17 +346,19 @@ function lookup() {
         return;
     }
     
-    // Check dictionary for elementary particles
     if (PDG[code] !== undefined) {
         var info = PARTICLE_INFO[code] || null;
         resultDiv.innerHTML = displayParticleInfo(PDG[code], info, "elementary");
         return;
     }
     
-    // Try to decode as nucleus
     var nucleus = decodeNucleus(code);
     if (nucleus) {
         var nuclearInfo = {
+            "Atomic mass": nucleus.atomicMass + " MeV/c²",
+            "Nuclear mass": nucleus.nuclearMass + " MeV/c²",
+            "Binding energy": nucleus.bindingEnergy + " MeV",
+            "Binding per nucleon": nucleus.bindingPerNucleon + " MeV/nucleon",
             "Atomic Number (Z)": nucleus.Z,
             "Neutron Number (N)": nucleus.N,
             "Mass Number (A)": nucleus.A,
@@ -346,7 +375,6 @@ function lookup() {
         return;
     }
     
-    // Unknown code
     resultDiv.innerHTML = displayParticleInfo("Unknown PDG code: " + code, null, "error");
 }
 
@@ -356,7 +384,6 @@ function getTodayDateString() {
 }
 
 function getDailyQuoteIndex() {
-    // Use today's date as a seed for consistent daily quote
     var dateStr = getTodayDateString();
     var hash = 0;
     for (var i = 0; i < dateStr.length; i++) {
@@ -372,14 +399,12 @@ function setRandomQuote() {
     var storedQuote = localStorage.getItem("quoteText");
     var storedAuthor = localStorage.getItem("quoteAuthor");
     
-    // If we have a quote from today, use it
     if (storedDate === today && storedQuote && storedAuthor) {
         document.getElementById("quoteText").textContent = storedQuote;
         document.getElementById("quoteAuthor").textContent = storedAuthor;
         return;
     }
     
-    // Otherwise, get a new quote for today
     fetch("https://api.quotable.io/quotes/random?tags=science|technology")
         .then(function(response) {
             return response.json();
@@ -392,7 +417,6 @@ function setRandomQuote() {
                 document.getElementById("quoteText").textContent = quoteText;
                 document.getElementById("quoteAuthor").textContent = quoteAuthor;
                 
-                // Store for the rest of the day
                 localStorage.setItem("quoteDate", today);
                 localStorage.setItem("quoteText", quoteText);
                 localStorage.setItem("quoteAuthor", quoteAuthor);
@@ -401,13 +425,11 @@ function setRandomQuote() {
             }
         })
         .catch(function() {
-            // If API fails, use local quotes
             setLocalQuote();
         });
 }
 
 function setLocalQuote() {
-    // Use date-based index for consistent daily quote from local collection
     var index = getDailyQuoteIndex();
     var quote = QUOTES[index];
     var quoteText = '"' + quote.text + '"';
@@ -416,12 +438,40 @@ function setLocalQuote() {
     document.getElementById("quoteText").textContent = quoteText;
     document.getElementById("quoteAuthor").textContent = quoteAuthor;
     
-    // Store for the rest of the day
     var today = getTodayDateString();
     localStorage.setItem("quoteDate", today);
     localStorage.setItem("quoteText", quoteText);
     localStorage.setItem("quoteAuthor", quoteAuthor);
 }
+
+// Physics quotes - expanded collection with fallback
+const QUOTES = [
+    { text: "The most incomprehensible thing about the world is that it is comprehensible.", author: "Albert Einstein" },
+    { text: "If you can't explain it simply, you don't understand it well enough.", author: "Albert Einstein" },
+    { text: "Physics is like sex: sure, it may give some practical results, but that's not why we do it.", author: "Richard Feynman" },
+    { text: "The first principle is that you must not fool yourself, and you are the easiest person to fool.", author: "Richard Feynman" },
+    { text: "God does not play dice with the universe.", author: "Albert Einstein" },
+    { text: "Everything is theoretically impossible, until it is done.", author: "Robert A. Heinlein" },
+    { text: "In physics, you don't have to go around making trouble for yourself—nature does it for you.", author: "Frank Wilczek" },
+    { text: "Physics isn't the most important thing. Love is.", author: "Richard Feynman" },
+    { text: "The beauty of a living thing is not the atoms that go into it, but the way those atoms are put together.", author: "Carl Sagan" },
+    { text: "Nothing in life is to be feared, it is only to be understood.", author: "Marie Curie" },
+    { text: "Science is not only compatible with spirituality; it is a profound source of spirituality.", author: "Carl Sagan" },
+    { text: "An expert is a person who has made all the mistakes that can be made in a very narrow field.", author: "Niels Bohr" },
+    { text: "What we observe is not nature itself, but nature exposed to our method of questioning.", author: "Werner Heisenberg" },
+    { text: "Imagination is more important than knowledge.", author: "Albert Einstein" },
+    { text: "Reality is merely an illusion, albeit a very persistent one.", author: "Albert Einstein" },
+    { text: "Two things are infinite: the universe and human stupidity; and I'm not sure about the universe.", author: "Albert Einstein" },
+    { text: "I think nature's imagination is so much greater than man's, she's never going to let us relax.", author: "Richard Feynman" },
+    { text: "We are just an advanced breed of monkeys on a minor planet of a very average star.", author: "Stephen Hawking" },
+    { text: "The saddest aspect of life right now is that science gathers knowledge faster than society gathers wisdom.", author: "Isaac Asimov" },
+    { text: "Equipped with his five senses, man explores the universe around him and calls the adventure Science.", author: "Edwin Hubble" },
+    { text: "I would rather have questions that can't be answered than answers that can't be questioned.", author: "Richard Feynman" },
+    { text: "In science, there are no shortcuts to truth.", author: "Karl Popper" },
+    { text: "The good thing about science is that it's true whether or not you believe in it.", author: "Neil deGrasse Tyson" },
+    { text: "Somewhere, something incredible is waiting to be known.", author: "Carl Sagan" },
+    { text: "Science knows no country, because knowledge belongs to humanity, and is the torch which illuminates the world.", author: "Louis Pasteur" }
+];
 
 document.addEventListener("DOMContentLoaded", function() {
     var input = document.getElementById("pdgInput");
@@ -433,6 +483,5 @@ document.addEventListener("DOMContentLoaded", function() {
         });
     }
     
-    // Set a random quote on page load
     setRandomQuote();
 });
